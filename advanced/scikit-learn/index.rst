@@ -476,7 +476,7 @@ Now we can visualize the (transformed) iris dataset::
    :align: center
 
 
-PCA useful for more than visualization of high dimensional
+PCA is useful for more than visualization of high dimensional
 datasets. It can also be used as a preprocessing step to help speed up
 supervised methods that are not efficient with high
 dimensions.
