@@ -605,7 +605,7 @@ which is very similar to the least squares linear regression score
     problem. For instance the ``sklearn.linear_model.Lasso`` object
     solves lasso regressions using a *coordinate descent* method that
     is efficient on large datasets. However, ``scikit-learn`` also
-    provides the `skelarn.linear_model.least_angle.LassoLARS` object,
+    provides the `sklearn.linear_model.least_angle.LassoLARS` object,
     which uses *LARS*, a very efficient algorithm for problems in which
     the estimated weight vector is very sparse.
     *LARS* has problems with very few observations.
