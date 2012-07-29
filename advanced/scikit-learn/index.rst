@@ -94,7 +94,7 @@ To load the dataset into a Python object:
   >>> iris = datasets.load_iris()
 
 This data is stored in the ``.data`` member, which
-is a ``(n_samples, n_features)`` array.
+is an ``(n_samples, n_features)`` array.
 
     >>> iris.data.shape
     (150, 4)
@@ -125,7 +125,7 @@ dataset. This is an integer 1D array of length ``n_samples``:
         >>> pl.imshow(digits.images[0], cmap=pl.cm.gray_r) #doctest: +ELLIPSIS
         <matplotlib.image.AxesImage object at ...>
 
-    To use this dataset with the scikit, we transform each 8x8 image
+    To use this dataset with ``scikit-learn``, we transform each 8x8 image
     into a vector of length 64 ::
 
         >>> data = digits.images.reshape((digits.images.shape[0], -1))
@@ -137,7 +137,7 @@ Learning and Predicting
 +++++++++++++++++++++++
 
 Now that we've got some data, we would like to learn from it and
-predict on new one. In ``scikit-learn``, we learn from existing
+predict a new one. In ``scikit-learn``, we learn from existing
 data by creating an ``estimator`` and calling its ``fit(X, Y)`` method.
 
     >>> from sklearn import svm
@@ -146,15 +146,15 @@ data by creating an ``estimator`` and calling its ``fit(X, Y)`` method.
     LinearSVC(...)
 
 Once we have learned from the data, we can use our model to predict the
-most likely outcome on unseen data:
+most likely outcome of unseen data:
 
     >>> clf.predict([[ 5.0,  3.6,  1.3,  0.25]])
     array([0], dtype=int32)
 
-.. note:: 
-   
-    We can access the parameters of the model via its attributes ending
-    with an underscore:
+.. note::
+
+    We can access the parameters of a model via attributes ending
+    with underscores:
 
         >>> clf.coef_   #doctest: +ELLIPSIS
         array([[ 0...]])
@@ -242,7 +242,7 @@ which are the observations closest to the separating hyperplane.
 There are several support vector machine implementations in ``scikit-learn``.
 The most commonly used ones are ``svm.SVC``, ``svm.NuSVC`` and ``svm.LinearSVC``;
 "SVC" stands for Support Vector Classifier (there also exist SVMs for regression,
-which are called "SVR" in ``scikit-learn``).
+which are called "SVRs" in ``scikit-learn``).
 
 .. topic:: **Excercise**
    :class: green
@@ -336,11 +336,11 @@ K-means clustering
 The simplest clustering algorithm is k-means. This divides a set into
 *k* clusters, assigning each observation to a cluster so as to minimize
 the distance of that observation (in *n*-dimensional space) to the cluster's
-mean; the means are then recomputed. This operation is run iteratively until
-the clusters converge, for a maximum for ``max_iter`` rounds.
+mean; the means are then recomputed. This operation is run iteratively (with
+with a maximum of ``max_iter`` rounds) until the clusters converge.
 
 (An alternative implementation of k-means is available in SciPy's ``cluster``
-package. The ``scikit-learn`` implementation differs from that by offering an
+package. The ``scikit-learn`` implementation differs by offering an
 object API and several additional features, including smart initialization.)
 
 ::
@@ -398,9 +398,9 @@ object API and several additional features, including smart initialization.)
 .. topic:: **Application to Image Compression**
 
     Clustering can be seen as a way of choosing a small number of
-    observations from the information. For instance, this can be used
-    to posterize an image (conversion of a continuous gradation of
-    tone to several regions of fewer tones)::
+    observations from the information. For instance, clustering can be
+    used to posterize an image (project a continuous gradation of
+    tones to several regions of fewer tones)::
 
     >>> from scipy import misc
     >>> lena = misc.lena().astype(np.float32)
@@ -447,15 +447,15 @@ Dimension Reduction with Principal Component Analysis
 
 The cloud of points spanned by the observations above is very flat in
 one direction, so that one feature can almost be exactly computed
-using the 2 other. PCA finds the directions in which the data is not
-*flat* and it can reduce the dimensionality of the data by projecting
-on a subspace.
+from the two others. PCA finds the directions in which the data is not
+*flat* and can then reduce the dimensionality of the data by
+projecting to a subspace.
 
 
 .. warning::
 
-    Depending on your version of scikit-learn PCA will be in module
-    ``decomposition`` or ``pca``.
+    Depending on your version of ``scikit-learn``, PCA will be in
+    either the ``decomposition`` or ``pca`` module.
 
 ::
 
@@ -476,7 +476,7 @@ Now we can visualize the (transformed) iris dataset::
    :align: center
 
 
-PCA is not just useful for visualization of high dimensional
+PCA useful for more than visualization of high dimensional
 datasets. It can also be used as a preprocessing step to help speed up
 supervised methods that are not efficient with high
 dimensions.
@@ -553,7 +553,7 @@ Linear model: from regression to sparsity
 .. topic:: Diabetes dataset
 
     The diabetes dataset consists of 10 physiological variables (age,
-    sex, weight, blood pressure) measure on 442 patients, and an
+    sex, weight, blood pressure) measured on 442 patients, and an
     indication of disease progression after one year::
 
         >>> diabetes = datasets.load_diabetes()
@@ -562,22 +562,21 @@ Linear model: from regression to sparsity
         >>> diabetes_y_train = diabetes.target[:-20]
         >>> diabetes_y_test  = diabetes.target[-20:]
     
-    The task at hand is to predict disease prediction from physiological
-    variables. 
+    The task at hand is to predict disease progression from
+    physiological variables. 
 
 
 Sparse models
 +++++++++++++
 
-To improve the conditioning of the problem (uninformative variables,
-mitigate the curse of dimensionality, as a feature selection
-preprocessing, etc.), it would be interesting to select only the
-informative features and set non-informative ones to 0. This
+To improve the conditioning of the problem and mitigate the
+curse of dimensionality, it is sometimes interesting to select only
+relevant features during feature selection preprocessing.
+Irrelevant features are nullified. This
 penalization approach, called **Lasso**, can set some coefficients to
-zero.  Such methods are called **sparse method**, and sparsity can be
+zero.  Such methods are called **sparse methods**. Sparsity can be
 seen as an application of Occam's razor: prefer simpler models to
 complex ones.
-
 :: 
 
     >>> from sklearn import linear_model
@@ -591,7 +590,8 @@ complex ones.
     >>> regr.score(diabetes_X_test, diabetes_y_test) # doctest: +ELLIPSIS
     0.5510835453...
 
-being the score very similar to linear regression (Least Squares)::
+which is very similar to the least squares linear regression score
+:: 
 
     >>> lin = linear_model.LinearRegression()
     >>> lin.fit(diabetes_X_train, diabetes_y_train) # doctest: +ELLIPSIS
@@ -602,12 +602,13 @@ being the score very similar to linear regression (Least Squares)::
 .. topic:: **Different algorithms for a same problem**
 
     Different algorithms can be used to solve the same mathematical
-    problem. For instance the `Lasso` object in the `sklearn`
-    solves the lasso regression using a *coordinate descent* method, that
-    is efficient on large datasets. However, the `sklearn` also
-    provides the `LassoLARS` object, using the *LARS* which is very
-    efficient for problems in which the weight vector estimated is very
-    sparse, that is problems with very few observations.
+    problem. For instance the ``sklearn.linear_model.Lasso`` object
+    solves lasso regressions using a *coordinate descent* method that
+    is efficient on large datasets. However, ``scikit-learn`` also
+    provides the `skelarn.linear_model.least_angle.LassoLARS` object,
+    which uses *LARS*, a very efficient algorithm for problems in which
+    the estimated weight vector is very sparse.
+    *LARS* has problems with very few observations.
 
 
 Model selection: choosing estimators and their parameters
@@ -620,10 +621,11 @@ Grid-search and cross-validated estimators
 Grid-search
 -----------
 
-The scikit-learn provides an object that, given data, computes the score
-during the fit of an estimator on a parameter grid and chooses the
-parameters to maximize the cross-validation score. This object takes an
-estimator during the construction and exposes an estimator API::
+``scikit-learn`` provides a *Grid Search* object that, given data,
+computes the fitness scores of combinations from a parameter grid
+in order to select parameters that maximize the cross-validation score.
+The *Grid Search* object takes an estimator during construction
+and exposes an estimator API::
 
     >>> from sklearn import svm, grid_search
     >>> gammas = np.logspace(-6, -1, 10)
@@ -639,17 +641,16 @@ estimator during the construction and exposes an estimator API::
     0.00059948425031894088
 
 
-By default the `GridSearchCV` uses a 3-fold cross-validation. However, if
-it detects that a classifier is passed, rather than a regressor, it uses
-a stratified 3-fold.
-
-
+By default, `GridSearchCV` uses a 3-fold cross-validation. This can be
+tuned by setting the ``cv`` parameter. If the ``estimator`` parameter
+is a ``classifier`` (an object with a ``.score(X, Y)`` method),
+`GridSearchCV` uses a statified ``cv``-fold cross-validation.
 
 Cross-validated estimators
 --------------------------
 
 Cross-validation to set a parameter can be done more efficiently on an
-algorithm-by-algorithm basis. This is why, for certain estimators, the
+algorithm-by-algorithm basis. This is why, for certain estimators, 
 scikit-learn exposes "CV" estimators, that set their parameter
 automatically by cross-validation::
 
@@ -667,7 +668,7 @@ automatically by cross-validation::
     >>> lasso.alpha # doctest: +ELLIPSIS
     0.013...
 
-These estimators are called similarly to their counterparts, with 'CV'
+These estimators are named similarly to their counterparts, with 'CV'
 appended to their name.
 
 .. topic:: **Exercise**
@@ -681,4 +682,5 @@ appended to their name.
 
 
  
+
 
